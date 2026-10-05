@@ -1,0 +1,30 @@
+# Visual Studio user/local files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build output
+Debug/
+Release/
+Debug-GOTY/
+Release-GOTY/
+build_obj/
+x64/
+ipch/
+
+# MSVC intermediate/build artifacts
+*.obj
+*.pdb
+*.idb
+*.ilk
+*.tlog
+*.log
+*.cache
+*.lastbuildstate
+*.sdf
+*.ipch
+
+# Built executables (keep bass.dll / dx8sdk — they are required runtime/build deps)
+*.exe

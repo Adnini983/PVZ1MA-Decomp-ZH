@@ -1,0 +1,41 @@
+name: CI Build
+
+on:
+  push:
+    branches: [ master, OG_Only ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build (${{ matrix.configuration }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [ Debug, Release, Debug-GOTY, Release-GOTY ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build (${{ matrix.configuration }})
+        shell: pwsh
+        run: |
+          msbuild "PlantsVsZombies.sln" `
+            /p:Configuration="${{ matrix.configuration }}" `
+            /p:Platform=x86 `
+            /m /v:minimal /nologo
+
+      - name: Verify executable
+        shell: pwsh
+        run: |
+          $exe = "${{ matrix.configuration }}\LawnProject.exe"
+          if (-not (Test-Path $exe)) {
+            Write-Error "Build succeeded but $exe was not produced."
+            exit 1
+          }
+          Write-Host "Produced $exe"
