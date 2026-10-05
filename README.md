@@ -1,7 +1,7 @@
 # Plants vs. Zombies 1 Decomp —— OG 英文原版分支（OG_Only）
 
-> **分支说明**：本分支为 `OG_Only`，对应 `source_modding`——一个面向 **1.0.0.1051 英文原版数据包**的 PVZ1 Decomp fork。
-> 中文化（2012 中文年度版数据包）的主线在 **master** 分支（对应 `source_chinese`）。
+> **分支说明**：本分支为仓库的 **`OG_Only`**，面向 **1.0.0.1051 英文原版数据包**。
+> 中文化（2012 中文年度版数据包）的主线在 **`main`** 分支。
 
 ---
 
@@ -13,9 +13,9 @@
 - 修改方：**豆包（Doubao）**。
 - 提示词与测试环境：由**用户**提供。
 
-## 与 master 的区别
+## 与 main 分支的区别
 
-| 项 | master（source_chinese） | 本分支 OG_Only（source_modding） |
+| 项 | main | 本分支 OG_Only |
 | --- | --- | --- |
 | 数据包 | 2012 中文年度版 / 1.0.0.1051 英文原版 | 1.0.0.1051 英文原版 |
 | 编译配置 | `Debug` / `Release` / `Debug-GOTY` / `Release-GOTY` | `Debug` / `Release` |
@@ -63,12 +63,12 @@
 
 ## PAK 兼容
 
-本分支面向**英文原版数据包**。若想加载 2012 中文年度版数据包，需要注意 **reanim 命名差异**（`Zombie_Jackson`/`Zombie_dancer` vs `Zombie_disco`/`Zombie_backup`），并自行补全相关动画，否则会报错无法启动。详细说明见 **master** 分支 README 的"PAK 兼容"一节。
+本分支面向**英文原版数据包**。若想加载 2012 中文年度版数据包，需要注意 **reanim 命名差异**（`Zombie_Jackson`/`Zombie_dancer` vs `Zombie_disco`/`Zombie_backup`），并自行补全相关动画，否则会报错无法启动。详细说明见 **main** 分支 README 的"PAK 兼容"一节。
 
 ## 目录结构
 
 ```
-source_modding/
+PVZ1MA-Decomp-OG/
 ├── PlantsVsZombies.sln        # 解决方案（2 配置）
 ├── SexyAppFramework/          # 游戏框架与主工程（SexyAppBase.vcxproj）
 ├── Lawn/                      # 游戏逻辑
