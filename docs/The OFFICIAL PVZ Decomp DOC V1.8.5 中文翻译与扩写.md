@@ -128,7 +128,7 @@ https://youtu.be/zCreWdPBDOs?si=n1OBBQS7HedVC80O
 
 ### 3.5 植物发射什么投射物
 
-进入 `Plant.cpp` 并定位到第 4632 行。如果你看不到行号，可以到 YouTube 上搜索如何在 Visual Studio 中开启行号显示。
+进入 `Plant.cpp`，找到 **`Plant::Fire()`** 函数——它根据植物类型 `SeedType` 决定这一发发射哪种投射物（`aProjectileType = ProjectileType::...` 的 `switch` 就在其中；V1.8.5 中约位于第 4519–4632 行一带）。如果你看不到行号，可以到 YouTube 上搜索如何在 Visual Studio 中开启行号显示。
 
 （这个视频会教你如何在 Visual Studio 开启行号：）
 
@@ -241,7 +241,7 @@ https://www.youtube.com/watch?v=k3XkNQclQ60
 
 ### 4.3 僵尸生成速率
 
-要修改僵尸的生成速率，进入 `Board.cpp` 定位到第 669 行，或进入 `PickZombieWaves()`。
+要修改僵尸的生成速率，进入 `Board.cpp`，找到 **`Board::PickZombieWaves()`** 函数（V1.8.5 中约位于第 573 行起）。
 
 你可以修改这些僵尸点数（Zombie Points）：
 
@@ -249,9 +249,11 @@ https://www.youtube.com/watch?v=k3XkNQclQ60
 
 `aZombiePoints`
 
+> **为什么这个数字影响生成速率？** `aZombiePoints` 是本关卡的**波次生成预算**。`PickZombieWaves()` 在一个 `while` 循环里，用剩余点数调用 `PickZombieType()` 逐个挑选这一波要生成哪些僵尸（点数越多，能生成的数量与可选的种类就越多），直到预算用尽或达到单波数量上限为止。所以调大它，僵尸会更多也更杂；调小则更少、更单一。
+
 ### 4.4 修改僵尸王（Zomboss）的生成
 
-进入 `Zombie.cpp` 并定位到第 56 行（`gBossZombieList`）：
+进入 `Zombie.cpp`，找到 **`gBossZombieList`**（僵尸王列表，V1.8.5 中约位于第 56 行）：
 
 ![僵尸王列表](media/image1.png)
 
@@ -543,7 +545,7 @@ case SeedType::[你的植物]:
 
 ### 6.2 修改美术挑战（Art Challenges）
 
-进入 `Challenge.cpp` 并定位到第 261 行（或向下滚动）：
+进入 `Challenge.cpp`，找到美术挑战用的三个布局数组 **`gArtChallengeWallnut` / `gArtChallengeSunFlower` / `gArtChallengeStarFruit`**（在文件顶部，V1.8.5 中约从第 261 行开始）：
 
 ![美术挑战](media/image76.png)
 
@@ -559,6 +561,8 @@ case SeedType::[你的植物]:
 
 进入 `gameconstants.h` 搜索 `ADVENTURE_AREAS = 5`，把 5 改成 6。
 
+> **为什么改这个数字？** `ADVENTURE_AREAS` 定义冒险模式的**世界数量**。默认 5 表示只有 5 个世界；改成 6 后，游戏才会为你的新世界分配区域，否则新世界不会被冒险模式识别。
+
 接下来在 `board.cpp` 搜索：
 
 ```cpp
@@ -571,7 +575,11 @@ mNumWaves = gZombieWaves[ClampInt(mLevel - 1, 0, 49)];
 return gZombieAllowedLevels[theZombieType].mAllowedOnLevel[ClampInt(theLevel - 1, 0, 49)];
 ```
 
-把 49 再改成 59。接着在 `challenge.h` 中搜索：
+把 49 再改成 59。
+
+> **为什么改 49？** `49` 是关卡索引的**上限**（`ClampInt(..., 0, 49)` 允许 0–49，即最多 50 个关卡的波次数据）。新增第 6 个世界需要更多关卡的波次定义，所以把上限提高到 `59`（0–59，即 60 个关卡），否则新世界的关卡会被 `ClampInt` 钳制回已有的 50 关之内。
+
+接着在 `challenge.h` 中搜索：
 
 ```cpp
 int mAllowedOnLevel[50];
