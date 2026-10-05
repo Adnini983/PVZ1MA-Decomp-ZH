@@ -3,8 +3,6 @@
 #include "TodStringFile.h"
 #include "../PakLib/PakInterface.h"
 #include "../SexyAppFramework/Font.h"
-#include "../SexyAppFramework/Common.h"
-#include <windows.h>
 
 int gTodStringFormatCount;               //[0x69DE4C]
 TodStringListFormat* gTodStringFormats;  //[0x69DA34]
@@ -148,24 +146,6 @@ bool TodStringListReadFile(const char* theFileName)
 		aSuccess = false;
 	}
 	aFileText[aSize] = '\0';
-
-	// 中文年度版 LawnStrings.txt 是 UTF-16LE 带 BOM；检测并解码为 UTF-8 后再解析
-	if ((aSize >= 2) && ((unsigned char) aFileText[0] == 0xFF) && ((unsigned char) aFileText[1] == 0xFE))
-	{
-		int aWideLen = (aSize - 2) / 2;
-		wchar_t* aWide = new wchar_t[aWideLen + 1];
-		memcpy(aWide, aFileText + 2, aWideLen * sizeof(wchar_t));
-		aWide[aWideLen] = 0;
-		int aUtf8Len = WideCharToMultiByte(CP_UTF8, 0, aWide, aWideLen, NULL, 0, NULL, NULL);
-		char* aUtf8 = new char[aUtf8Len + 1];
-		WideCharToMultiByte(CP_UTF8, 0, aWide, aWideLen, aUtf8, aUtf8Len, NULL, NULL);
-		aUtf8[aUtf8Len] = 0;
-		delete[] aWide;
-		delete[] aFileText;
-		aFileText = aUtf8;
-		aSize = aUtf8Len;
-	}
-
 	if (aSuccess)
 	{
 		aSuccess = TodStringListReadItems(aFileText);
@@ -359,14 +339,13 @@ int TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rec
 	int aLineFeedPos = 0;
 	int aCurPos = 0;
 	int aCurWidth = 0;
-	uint32_t aCurChar = 0;
-	uint32_t aPrevChar = 0;
+	SexyChar aCurChar = '\0';
+	SexyChar aPrevChar = '\0';
 	int aSpacePos = -1;
 	int aMaxWidth = 0;
 	while (aCurPos < theText.size())
 	{
-		size_t aDecPos = aCurPos;
-		aCurChar = Sexy::Utf8Decode(theText, aDecPos);
+		aCurChar = theText[aCurPos];
 		if (aCurChar == '{')  // 如果当前字符是特殊格式控制字符的起始标志（即“{”）
 		{
 			const char* aFmtStart = theText.c_str() + aCurPos;
@@ -385,7 +364,7 @@ int TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rec
 				continue;
 			}
 		}
-		else if (CharIsSpaceInFormat((SexyChar)aCurChar, aCurrentFormat))
+		else if (CharIsSpaceInFormat(aCurChar, aCurrentFormat))
 		{
 			aSpacePos = aCurPos;
 			aCurChar = ' ';
@@ -394,7 +373,7 @@ int TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rec
 		{
 			aSpacePos = aCurPos;
 			aCurWidth = theRect.mWidth + 1;
-			aCurPos = (int)aDecPos;
+			aCurPos++;
 		}
 
 		aCurWidth += (*aCurrentFormat.mNewFont)->CharWidthKern(aCurChar, aPrevChar);  // 当前宽度加上当前字符的宽度
@@ -433,8 +412,8 @@ int TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rec
 			}
 			else
 			{
-				if ((int)aCurPos <= aLineFeedPos)
-					aCurPos = (int)aDecPos;  // 若当前字符是本行第一个字符，则必须完整包含它以保证前进
+				if (aCurPos < aLineFeedPos + 1)
+					aCurPos++;  // 确保每行至少有 1 个字符
 
 				aLineWidth = TodWriteWordWrappedHelper(
 					g,
@@ -463,7 +442,7 @@ int TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rec
 		}
 		else  // 当前宽度未超过限制区域宽度时
 		{
-			aCurPos = (int)aDecPos;  // 继续下一个字符
+			aCurPos++;  // 继续下一个字符
 		}
 	}
 

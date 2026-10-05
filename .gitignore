@@ -8,8 +8,6 @@
 # Build output
 Debug/
 Release/
-Debug-GOTY/
-Release-GOTY/
 build_obj/
 x64/
 ipch/

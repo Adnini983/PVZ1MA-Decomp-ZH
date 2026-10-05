@@ -168,9 +168,6 @@ std::string			GetFullPath(const std::string& theRelPath);
 std::string			GetPathFrom(const std::string& theRelPath, const std::string& theDir);
 bool				AllowAllAccess(const std::string& theFileName);
 
-uint32_t			Utf8Decode(const std::string& s, size_t& pos);
-size_t				Utf8ToCodePoints(const std::string& s, std::vector<uint32_t>& theOut);
-
 
 inline void			inlineUpper(std::string &theData)
 {

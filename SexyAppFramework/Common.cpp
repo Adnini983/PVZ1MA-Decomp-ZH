@@ -7,7 +7,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <aclapi.h>
-#include <windows.h>
 
 #include "PerfTimer.h"
 
@@ -149,7 +148,7 @@ std::string Sexy::StringToUpper(const std::string& theString)
 	std::string aString;
 
 	for (unsigned i = 0; i < theString.length(); i++)
-		aString += toupper((unsigned char) theString[i]);
+		aString += toupper(theString[i]);
 
 	return aString;
 }
@@ -169,7 +168,7 @@ std::string Sexy::StringToLower(const std::string& theString)
 	std::string aString;
 
 	for (unsigned i = 0; i < theString.length(); i++)
-		aString += tolower((unsigned char) theString[i]);
+		aString += tolower(theString[i]);
 
 	return aString;
 }
@@ -179,96 +178,40 @@ std::wstring Sexy::StringToLower(const std::wstring& theString)
 	std::wstring aString;
 
 	for (unsigned i = 0; i < theString.length(); ++i)
-		aString += tolower((unsigned char) theString[i]);
+		aString += tolower(theString[i]);
 
 	return aString;
 }
 
 std::wstring Sexy::StringToWString(const std::string &theString)
 {
-	if (theString.empty())
-		return std::wstring();
-
-	int aRequired = MultiByteToWideChar(CP_UTF8, 0, theString.c_str(), (int) theString.size(), NULL, 0);
-	std::wstring aString(aRequired, 0);
-	MultiByteToWideChar(CP_UTF8, 0, theString.c_str(), (int) theString.size(), &aString[0], aRequired);
+	std::wstring aString;
+	aString.reserve(theString.length());
+	for(size_t i = 0; i < theString.length(); ++i)
+		aString += (unsigned char)theString[i];
 	return aString;
 }
 
 std::string Sexy::WStringToString(const std::wstring &theString)
 {
-	if (theString.empty())
-		return std::string();
-
-	int aRequired = WideCharToMultiByte(CP_UTF8, 0, theString.c_str(), (int) theString.size(), NULL, 0, NULL, NULL);
-	std::string aString(aRequired, 0);
-	WideCharToMultiByte(CP_UTF8, 0, theString.c_str(), (int) theString.size(), &aString[0], aRequired, NULL, NULL);
-	return aString;
-}
-
-uint32_t Sexy::Utf8Decode(const std::string& s, size_t& pos)
-{
-	unsigned char aByte = (unsigned char)s[pos];
-	uint32_t aCodePoint = 0;
-	int aExtra = 0;
-
-	if (aByte < 0x80)
+	size_t aRequiredLength = wcstombs( NULL, theString.c_str(), 0 );
+	if (aRequiredLength < 16384)
 	{
-		aCodePoint = aByte;
-		pos += 1;
-		return aCodePoint;
-	}
-	else if ((aByte & 0xE0) == 0xC0)
-	{
-		aCodePoint = aByte & 0x1F;
-		aExtra = 1;
-	}
-	else if ((aByte & 0xF0) == 0xE0)
-	{
-		aCodePoint = aByte & 0x0F;
-		aExtra = 2;
-	}
-	else if ((aByte & 0xF8) == 0xF0)
-	{
-		aCodePoint = aByte & 0x07;
-		aExtra = 3;
+		char aBuffer[16384];
+		wcstombs( aBuffer, theString.c_str(), 16384 );
+		return std::string(aBuffer);
 	}
 	else
 	{
-		pos += 1;
-		return 0xFFFD;
-	}
+		DBG_ASSERTE(aRequiredLength != (size_t)-1);
+		if (aRequiredLength == (size_t)-1) return "";
 
-	if (pos + aExtra >= s.size())
-	{
-		pos += 1;
-		return 0xFFFD;
+		char* aBuffer = new char[aRequiredLength+1];
+		wcstombs( aBuffer, theString.c_str(), aRequiredLength+1 );
+		std::string aStr = aBuffer;
+		delete[] aBuffer;
+		return aStr;
 	}
-
-	for (int i = 1; i <= aExtra; i++)
-	{
-		unsigned char aNext = (unsigned char)s[pos + i];
-		if ((aNext & 0xC0) != 0x80)
-		{
-			pos += 1;
-			return 0xFFFD;
-		}
-		aCodePoint = (aCodePoint << 6) | (aNext & 0x3F);
-	}
-	pos += aExtra + 1;
-	return aCodePoint;
-}
-
-size_t Sexy::Utf8ToCodePoints(const std::string& s, std::vector<uint32_t>& theOut)
-{
-	theOut.clear();
-	theOut.reserve(s.size());
-	size_t aPos = 0;
-	while (aPos < s.size())
-	{
-		theOut.push_back(Utf8Decode(s, aPos));
-	}
-	return theOut.size();
 }
 
 SexyString Sexy::StringToSexyString(const std::string& theString)
@@ -310,11 +253,11 @@ std::wstring Sexy::SexyStringToWString(const SexyString& theString)
 std::string Sexy::Trim(const std::string& theString)
 {
 	int aStartPos = 0;
-	while ( aStartPos < (int) theString.length() && isspace((unsigned char) theString[aStartPos]) )
+	while ( aStartPos < (int) theString.length() && isspace(theString[aStartPos]) )
 		aStartPos++;
 
 	int anEndPos = theString.length() - 1;
-	while ( anEndPos >= 0 && isspace((unsigned char) theString[anEndPos]) )
+	while ( anEndPos >= 0 && isspace(theString[anEndPos]) )
 		anEndPos--;
 
 	return theString.substr(aStartPos, anEndPos - aStartPos + 1);
@@ -1345,7 +1288,7 @@ int Sexy::StrFindNoCase(const char *theStr, const char *theFind)
 		p2 = 0;
 		while(p1<len1 && p2<len2)
 		{
-			if(tolower((unsigned char) theStr[p1])!=tolower((unsigned char) theFind[p2]))
+			if(tolower(theStr[p1])!=tolower(theFind[p2]))
 				break;
 
 			p1++; p2++;
@@ -1367,8 +1310,8 @@ bool Sexy::StrPrefixNoCase(const char *theStr, const char *thePrefix, int maxLen
 	char c1 = 0, c2 = 0;
 	for (i=0; i<maxLength; i++)
 	{
-		c1 = tolower((unsigned char) *theStr++);
-		c2 = tolower((unsigned char) *thePrefix++);
+		c1 = tolower(*theStr++);
+		c2 = tolower(*thePrefix++);
 
 		if (c1==0 || c2==0)
 			break;

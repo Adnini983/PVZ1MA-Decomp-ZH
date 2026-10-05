@@ -1162,15 +1162,6 @@ SharedImageRef ResourceManager::GetImageThrow(const std::string &theId)
 			return NULL;
 	}
 
-	// 2012 中文年度版 PAK 兼容：1056 把部分 reanim 图片改名（如 ZOMBIE_JACKSON_* → ZOMBIE_DISCO_*），
-	// 清单里没有 1051 代码请求的旧名。这里回退到磁盘上的 1051 英文 reanim 图，保证全部重播图可解析。
-	if (theId.compare(0, 13, "IMAGE_REANIM_") == 0 && mApp != NULL)
-	{
-		std::string aSuffix = theId.substr(13);
-		SharedImageRef aFallback = mApp->GetSharedImage(std::string("reanim\\") + aSuffix);
-		if ((Image*)aFallback != NULL)
-			return aFallback;
-	}
 
 	Fail(StrFormat("Image resource not found: %s",theId.c_str()));
 	throw ResourceManagerException(GetErrorText());

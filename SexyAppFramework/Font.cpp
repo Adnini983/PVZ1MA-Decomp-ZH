@@ -58,13 +58,13 @@ int Font::StringWidth(const SexyString& theString)
 	return 0;
 }
 
-int Font::CharWidth(uint32_t theChar)
+int Font::CharWidth(SexyChar theChar)
 {
-	SexyString aString(1, (SexyChar) theChar);
+	SexyString aString(1, theChar);
 	return StringWidth(aString);
 }
 
-int Font::CharWidthKern(uint32_t theChar, uint32_t thePrevChar)
+int Font::CharWidthKern(SexyChar theChar, SexyChar thePrevChar)
 {
 	return CharWidth(theChar);
 }

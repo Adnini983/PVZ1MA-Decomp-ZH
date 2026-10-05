@@ -436,7 +436,6 @@ bool DescParser::LoadDescriptor(const std::string& theFileName)
 		return false;	
 
 	char aBuffChar = 0;
-	bool aFirstLineDone = false;
 
 	while (!p_feof(aStream))
 	{		
@@ -531,16 +530,6 @@ bool DescParser::LoadDescriptor(const std::string& theFileName)
 
 		if (mCurrentLine.length() > 0)
 		{
-			// 剥离首行开头的 UTF-8 BOM（EF BB BF）——中文年度版字库描述以此开头
-			if (!aFirstLineDone && (mCurrentLine.size() >= 3) &&
-				((unsigned char) mCurrentLine[0] == 0xEF) &&
-				((unsigned char) mCurrentLine[1] == 0xBB) &&
-				((unsigned char) mCurrentLine[2] == 0xBF))
-			{
-				mCurrentLine = mCurrentLine.substr(3);
-			}
-			aFirstLineDone = true;
-
 			if (!ParseDescriptorLine(mCurrentLine))
 			{
 				hasErrors = true;

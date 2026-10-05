@@ -514,7 +514,7 @@ void TodDrawStringMatrix(Graphics* g, const Font* theFont, const SexyMatrix3& th
 				{
 					aSpacing = aLayer->mSpacing;
 
-					aSpacing += aCharData->GetKerningOffset(aNextChar);
+					aSpacing += aCharData->mKerningOffsets[aNextChar];
 					
 				}
 			}
@@ -532,7 +532,7 @@ void TodDrawStringMatrix(Graphics* g, const Font* theFont, const SexyMatrix3& th
 				{
 					aSpacing = aLayer->mSpacing;
 
-					aSpacing += aCharData->GetKerningOffset(aNextChar) * aScale;
+					aSpacing += aCharData->mKerningOffsets[aNextChar] * aScale;
 				
 				}
 			}

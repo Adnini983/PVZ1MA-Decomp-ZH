@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        configuration: [ Debug, Release, Debug-GOTY, Release-GOTY ]
+        configuration: [ Debug, Release ]
 
     steps:
       - name: Checkout
