@@ -77,12 +77,12 @@ PVZ1MA-Decomp-OG/
 ├── dx8sdk/                    # 编译所需 DirectX SDK 头
 ├── PopcapDocs/ PopcapTools/
 ├── bass.dll                   # 运行时音频库
-├── docs/                      # 官方 Decomp 文档中文翻译与扩写版（.md / .docx）
+├── docs/                      # 社区 Decomp/Modding 文档中文翻译与扩写版（.md / .docx）
 ├── README.md
 └── .github/workflows/ci.yml   # GitHub Actions 云编译
 ```
 
-## 致谢
+## 关联文档
 
-- 源码：Discord 社区 **「Plants Vs. Zombies 1 Modders Association」**。
-- 本分支由 **豆包（Doubao）** 修改，**提示词与测试环境由用户提供**。
+- 详细的**社区 Decomp / Modding 文档**（英文原版由 Discord 用户 `scarletstarz2009` 编写，为 PvZ1 Modders Association 社区维护文档，**不是** PopCap / EA 官方出版物）及**中文翻译与扩写版**，由豆包翻译扩写、用户提供提示词与测试环境。
+- 文档位于本仓库 `docs/` 目录（以 `.md` 为准，`.docx` 为发布版）。该文档是 `main` 与 `OG_Only` **共用**的基础手册；其中涉及 `Debug-GOTY` / `Release-GOTY`、中文 PAK、`PVZ_GOTY_ZH_PAK` 等**中文化内容仅适用于 `main` 分支**，`OG_Only` 分支不含这些内容。

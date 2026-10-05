@@ -1,8 +1,8 @@
-name: CI Build
+name: Build verification
 
 on:
   push:
-    branches: [ master, OG_Only ]
+    branches: [ main, OG_Only ]
   pull_request:
   workflow_dispatch:
 
