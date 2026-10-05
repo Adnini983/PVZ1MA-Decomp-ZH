@@ -111,8 +111,8 @@ PVZ1MA-Decomp-ZH/
 
 ## 关联文档
 
-- 详细的官方 Decomp 文档（英文原版由 Discord 用户 `scarletstarz2009` 编写）及**中文翻译与扩写版**（含编译与故障排查说明），由豆包翻译扩写、用户提供提示词与测试环境。
-- 中文文档与截图位于本仓库的 `docs/` 目录（含 `.md` 与 `.docx` 两种版本）。
+- 详细的**社区 Decomp / Modding 文档**（英文原版由 Discord 用户 `scarletstarz2009` 编写，为 PvZ1 Modders Association 社区维护文档，**不是** PopCap / EA 官方出版物）及**中文翻译与扩写版**（含编译与故障排查说明），由豆包翻译扩写、用户提供提示词与测试环境。
+- 中文文档与截图位于本仓库的 `docs/` 目录（含 `.md` 与 `.docx` 两种版本；以 `.md` 为准，`.docx` 为发布版）。
 
 ## 致谢
 

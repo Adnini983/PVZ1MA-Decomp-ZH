@@ -5,6 +5,10 @@
 > 翻译与扩写由 **豆包（Doubao）** 完成，**提示词与测试环境由用户提供**。
 > 本文档所针对的 Decomp 源码来自 Discord 社区 **「Plants Vs. Zombies 1 Modders Association」**。
 
+> ⚠️ **关于 "OFFICIAL" 一词**：本文标题沿用了英文原版的原始标题（*The OFFICIAL PVZ Decomp DOC*）。这里的 "OFFICIAL" 是**该社区文档自身使用的标题**，本中文版仅是照原文保留，**不代表 PopCap / EA 官方出版物**。本文实为 **PvZ1 Modders Association / 社区维护的 PvZ1 Decomp / Modding 文档**。
+
+> 📌 **分支适用说明**：本文是 `main`（ZH）与 `OG_Only` 两个分支**共用**的基础 Modding 手册。文中凡涉及 `Debug-GOTY` / `Release-GOTY` 配置、中文 PAK、`PVZ_GOTY_ZH_PAK` 宏、2012 中文年度版等**中文化内容，仅适用于 `main`（ZH）分支**；`OG_Only` 分支只提供 `Debug` / `Release` 两个配置，且**不含**任何中文化渲染改动。若你在 `OG_Only` 分支下看到这些内容，属于正常现象，它们并不存在于该分支。
+
 ---
 
 ## 目录
@@ -871,6 +875,8 @@ case NewOptionsDialog::NewOptionsDialog_HardwareAcceleration:
 
 本 fork 采用**单一源码树 + 多个编译配置（分支）**的方式，让作者在 IDE 中自选编译目标：
 
+> 📌 **分支适用**：`Debug-GOTY` / `Release-GOTY` 两个配置**仅存在于 `main`（ZH）分支**；`OG_Only` 分支只提供 `Debug` / `Release` 两个配置，且不含中文化渲染改动。
+
 | 配置名（IDE 中可自选） | 对应数据包 | 用途 |
 | --- | --- | --- |
 | `Debug` | 1.0.0.1051 英文原版 `main.pak` | 英文 OG 分支，调试版 |
@@ -960,6 +966,8 @@ case NewOptionsDialog::NewOptionsDialog_HardwareAcceleration:
 ## 附录 C：中文化（整包加载中文 PAK）
 
 > 本附录为豆包扩写，记录本 fork 实现中文化的整体方案。
+
+> 📌 **分支适用**：本附录整篇**仅适用于 `main`（ZH）分支**。`OG_Only` 分支不含任何中文化渲染改动、也没有 `PVZ_GOTY_ZH_PAK` 宏或 GOTY 配置；若你只想在英文原版数据上做 Mod，可跳过本附录。
 
 ### C.1 方案概述
 
